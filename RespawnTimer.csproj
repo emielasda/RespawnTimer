@@ -1,0 +1,45 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!--
+    Сборка: dotnet build -c Release
+    Путь к серверу можно переопределить: dotnet build -c Release -p:ScpSlServerPath="E:\SCPSL Server"
+  -->
+  <PropertyGroup>
+    <TargetFramework>net48</TargetFramework>
+    <LangVersion>latest</LangVersion>
+    <Nullable>disable</Nullable>
+    <AssemblyName>RespawnTimer</AssemblyName>
+    <RootNamespace>RespawnTimer</RootNamespace>
+    <PlatformTarget>x64</PlatformTarget>
+    <Version>1.0.0</Version>
+    <Deterministic>true</Deterministic>
+    <CopyLocalLockFileAssemblies>false</CopyLocalLockFileAssemblies>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <ScpSlServerPath Condition="'$(ScpSlServerPath)' == ''">D:\SteamLibrary\steamapps\common\SCP Secret Laboratory Dedicated Server</ScpSlServerPath>
+    <ScpSlManagedPath Condition="'$(ScpSlManagedPath)' == ''">$(ScpSlServerPath)\SCPSL_Data\Managed</ScpSlManagedPath>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies" Version="1.0.3" PrivateAssets="all" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- HintServiceMeow (MIT) - необязательная зависимость: на сервере ставится в plugins а Harmony в dependencies -->
+    <Reference Include="HintServiceMeow" HintPath="lib\HintServiceMeow-LabAPI.dll" Private="false" />
+  </ItemGroup>
+
+  <!-- Сборки игры: на сервер не копируются (Private=false) -->
+  <ItemGroup>
+    <Reference Include="Assembly-CSharp" HintPath="$(ScpSlManagedPath)\Assembly-CSharp.dll" Private="false" />
+    <!-- MEC (Timing) лежит в Assembly-CSharp-firstpass -->
+    <Reference Include="Assembly-CSharp-firstpass" HintPath="$(ScpSlManagedPath)\Assembly-CSharp-firstpass.dll" Private="false" />
+    <Reference Include="LabApi" HintPath="$(ScpSlManagedPath)\LabApi.dll" Private="false" />
+    <Reference Include="Mirror" HintPath="$(ScpSlManagedPath)\Mirror.dll" Private="false" />
+    <Reference Include="Pooling" HintPath="$(ScpSlManagedPath)\Pooling.dll" Private="false" />
+    <Reference Include="UnityEngine.CoreModule" HintPath="$(ScpSlManagedPath)\UnityEngine.CoreModule.dll" Private="false" />
+    <Reference Include="netstandard" HintPath="$(ScpSlManagedPath)\netstandard.dll" Private="false" />
+  </ItemGroup>
+
+</Project>
